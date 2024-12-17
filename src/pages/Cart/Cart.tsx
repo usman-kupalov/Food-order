@@ -1,16 +1,23 @@
 import { Heading } from "@components/Headling/Heading.tsx";
-import { useSelector } from "react-redux";
-import { RootState } from "@store/store.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@store/store.ts";
 import { CartItem } from "@components/CartItem/CartItem.tsx";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import styles from "./Cart.module.css";
 import { DELIVERY_FEE, PREFIX } from "@src/constants.ts";
 import { Product } from "@src/interface.ts";
+import { Button } from "@components/Button/Button.tsx";
+import { useNavigate } from "react-router-dom";
+import { cartActions } from "@store/cart.slice.ts";
 
 export const Cart = () => {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
+  const jwt = useSelector((s: RootState) => s.user.jwt);
   const items = useSelector((s: RootState) => s.cart.items);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   const total =
     items
       .map((i) => {
@@ -30,6 +37,34 @@ export const Cart = () => {
   const loadAllItems = async () => {
     const products = await Promise.all(items.map((i) => getItem(i.id)));
     setCartProducts(products);
+  };
+
+  const checkout = async () => {
+    try {
+      await axios.post(
+        `${PREFIX}/order`,
+        {
+          products: items,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        },
+      );
+      dispatch(cartActions.clean());
+      navigate("/success");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          alert("Вы не авторизованы");
+        } else {
+          alert("Произошла ошибка");
+        }
+      }
+      console.log(error);
+      return;
+    }
   };
 
   useEffect(() => {
@@ -73,6 +108,12 @@ export const Cart = () => {
           {total + DELIVERY_FEE}&nbsp;
           <span>$</span>
         </div>
+      </div>
+
+      <div className={styles["checkout"]}>
+        <Button appearance={"big"} onClick={checkout}>
+          Оформить
+        </Button>
       </div>
     </>
   );

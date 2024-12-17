@@ -42,3 +42,11 @@
     font-weight: 300;
     line-height: normal;
 }
+
+.checkout {
+    max-width: 512px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+}

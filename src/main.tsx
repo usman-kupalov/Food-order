@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -15,6 +15,7 @@ import { Auth } from "@components/Auth/Auth.tsx";
 import { Provider } from "react-redux";
 import { store } from "@store/store.ts";
 import { PREFIX } from "@src/constants.ts";
+import { Success } from "@pages/Success/Success.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Menu />,
+      },
+      {
+        path: "/success",
+        element: <Success />,
       },
       {
         path: "/bucket",
