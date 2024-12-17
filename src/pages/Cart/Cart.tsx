@@ -5,12 +5,22 @@ import { CartItem } from "@components/CartItem/CartItem.tsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Cart.module.css";
-import { PREFIX } from "@src/constants.ts";
+import { DELIVERY_FEE, PREFIX } from "@src/constants.ts";
 import { Product } from "@src/interface.ts";
 
 export const Cart = () => {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const items = useSelector((s: RootState) => s.cart.items);
+  const total =
+    items
+      .map((i) => {
+        const product = cartProducts.find((p) => p.id === i.id);
+        if (!product) {
+          return 0;
+        }
+        return i.count * product.price;
+      })
+      .reduce((acc, i) => acc + i, 0) + DELIVERY_FEE;
 
   const getItem = async (id: number) => {
     const { data } = await axios.get<Product>(`${PREFIX}/products/${id}`);
@@ -36,6 +46,32 @@ export const Cart = () => {
         }
         return <CartItem key={product.id} count={i.count} {...product} />;
       })}
+
+      <div className={styles["line"]}>
+        <div className={styles["text"]}>Итог</div>
+        <div className={styles["price"]}>
+          {total}&nbsp;
+          <span>$</span>
+        </div>
+      </div>
+      <hr className={styles["hr"]} />
+
+      <div className={styles["line"]}>
+        <div className={styles["text"]}>Доставка</div>
+        <div className={styles["price"]}>
+          {DELIVERY_FEE}&nbsp;
+          <span>$</span>
+        </div>
+      </div>
+
+      <hr className={styles["hr"]} />
+      <div className={styles["line"]}>
+        <div>Итог {items.length}</div>
+        <div>
+          {total + DELIVERY_FEE}&nbsp;
+          <span>$</span>
+        </div>
+      </div>
     </>
   );
 };
