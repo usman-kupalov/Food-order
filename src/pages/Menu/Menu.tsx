@@ -1,11 +1,11 @@
 import { Heading } from "@components/Headling/Heading.tsx";
 import { Search } from "@components/Search/Search.tsx";
 import styles from "./Menu.module.css";
-import { PREFIX } from "@/constants.ts";
-import { Product } from "@/interface.ts";
 import { ChangeEvent, useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { MenuList } from "@pages/Menu/MenuList/MenuList.tsx";
+import { PREFIX } from "@src/constants.ts";
+import { Product } from "@src/interface.ts";
 
 export const Menu = () => {
   const [products, setProducts] = useState<Product[]>([]);

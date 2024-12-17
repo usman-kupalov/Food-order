@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loadState } from "@store/storage.ts";
-import { JWT_PERSISTENT_STATE, PREFIX } from "@/constants.ts";
 import axios, { AxiosError } from "axios";
-import { LoginResponse, Profile } from "@/interface.ts";
 import { RootState } from "@store/store.ts";
+import { LoginResponse, Profile } from "@src/interface.ts";
+import { JWT_PERSISTENT_STATE, PREFIX } from "@src/constants.ts";
 
 interface UserPersistentState {
   jwt: string | null;

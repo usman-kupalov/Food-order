@@ -7,7 +7,6 @@ import { Cart } from "@pages/Cart/Cart.tsx";
 import { NotFound } from "@pages/NotFound/NotFound.tsx";
 import { Product } from "@pages/Product/Product.tsx";
 import axios from "axios";
-import { PREFIX } from "@/constants.ts";
 import Menu from "@pages/Menu/Menu.tsx";
 import { AuthLayout } from "@layout/Auth/AuthLayout.tsx";
 import { Login } from "@pages/Login/Login.tsx";
@@ -15,6 +14,7 @@ import { Register } from "@pages/Register/Register.tsx";
 import { Auth } from "@components/Auth/Auth.tsx";
 import { Provider } from "react-redux";
 import { store } from "@store/store.ts";
+import { PREFIX } from "@src/constants.ts";
 
 const router = createBrowserRouter([
   {
