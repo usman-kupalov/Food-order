@@ -66,8 +66,10 @@ export const Cart = () => {
 
       <hr className={styles["hr"]} />
       <div className={styles["line"]}>
-        <div>Итог {items.length}</div>
-        <div>
+        <div className={styles["text"]}>
+          Итог <span className={styles["total-count"]}>({items.length})</span>
+        </div>
+        <div className={styles["price"]}>
           {total + DELIVERY_FEE}&nbsp;
           <span>$</span>
         </div>
